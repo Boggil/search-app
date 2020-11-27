@@ -2,10 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import SearchProvider from './Component/SearchProvider';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(  
-  <App />,
+  <SearchProvider>
+    <App />
+  </SearchProvider>,
   document.getElementById('root')
 );
 

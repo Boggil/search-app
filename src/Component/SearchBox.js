@@ -1,36 +1,49 @@
 import React, {useState} from 'react';
-import KeywordInfo from '../Search/KeywordInfo';
 import SearchCategory from '../Search/SearchCategory';
-import DetailSearchKeywordBox from './DetailSearchKeywordBox';
 import DetailSearchKeywordList from './DetailSearchKeywordList';
-
-let keyword = '';
-let category = '';
+import SearchLibrary from '../Search/SearchLibrary';
+import ResultList from './ResultList';
 
 function SearchBox()
 {
+    const [keyword, setKeyword] = useState('');
+    const [category, setCategory] = useState(SearchCategory.BLOG);
+
     let categories = [];
-    let searchCategoryKeys = Reflect.ownKeys(SearchCategory);
-    for(let categoryKey of searchCategoryKeys)
-    {
-        let categoryValue = Reflect.get(SearchCategory, categoryKey);
-        categories.push(<option key={searchCategoryKeys.indexOf(categoryKey)}
-         value={categoryValue.value}>{categoryValue.displayName}</option>);
-    }
 
     function onCategorySelected(event)
     {
-        category = event.target.value;
+        let searchCategory = SearchCategory.BLOG;
+        for(let ownKey of Reflect.ownKeys(SearchCategory))
+        {
+            let searchCategoryByOwnKey = Reflect.get(SearchCategory, ownKey);
+            if(event.target.value === searchCategoryByOwnKey.value)
+            {
+                searchCategory = searchCategoryByOwnKey;
+            }
+        }
+        
+        setCategory(searchCategory);
     }
 
     function onSearchKeywordChanged(event)
     {
-        keyword = event.target.value;
+        setKeyword(event.target.value);
     }
 
     function onClickSearch(event)
     {
-
+        SearchLibrary.searchData(keyword, category);
+    }
+    
+    {
+        let searchCategoryKeys = Reflect.ownKeys(SearchCategory);
+        for(let categoryKey of searchCategoryKeys)
+        {
+            let categoryValue = Reflect.get(SearchCategory, categoryKey);
+            categories.push(<option key={searchCategoryKeys.indexOf(categoryKey)}
+            value={categoryValue.value}>{categoryValue.displayName}</option>);
+        }
     }
 
     return(
@@ -39,7 +52,8 @@ function SearchBox()
             <select onChange={onCategorySelected}> { categories } </select>
             <input type="button" value="검색" onClick={onClickSearch}></input>
             <br/>
-            <DetailSearchKeywordList></DetailSearchKeywordList>
+            <DetailSearchKeywordList category={category}></DetailSearchKeywordList>
+
         </div>
     );
 }

@@ -1,65 +1,60 @@
+import React from 'react';
 import Axios from 'axios';
 import SearchCategory from './SearchCategory'
 import KeywordInfo from './KeywordInfo';
+import ResultContext from '../Component/SearchProvider';
 
-function SearchLibrary()
+function SearchLibrary() { }
+
+SearchLibrary.prototype.searchData = async function (keyword, category) 
 {
-    static async function SearchData(keyword, category)
-    {
-        if(!Reflect.has(SearchCategory, category))
-        {
-            console.error('존재하지 않는 카테고리입니다. ' + category);
-            return;
-        }
+    const client_id = '7so2YGouMMLsYKXoo0J3';
+    const client_secret = 'qcwyCTBMQA';
 
-        const client_id = '7so2YGouMMLsYKXoo0J3';
-        const client_secret = 'qcwyCTBMQA';
-    
-        try
-        {
-            await Axios.get('/search/' + category + '?query=' + keyword, {
-                headers: {
-                'X-Naver-Client-Id':client_id,
-                'X-Naver-Client-Secret': client_secret
-                }
-            }).then((res)=>{console.log(res.data)});
-        }
-        catch(err)
-        {
-            console.log('err : ' + err);
-        }
+    try
+    {
+        await Axios.get('/search/' + category.value + '?query=' + keyword, {
+            headers: {
+            'X-Naver-Client-Id':client_id,
+            'X-Naver-Client-Secret': client_secret
+            }
+        }).then((res)=>{console.log(res)});
     }
-
-    static function MakeSearchKeyword(keywordInfoList)
+    catch(err)
     {
-        let searchKeyword = '';
-        for(let keywordInfo of keywordInfoList)
-        {
-          searchKeyword += SetupKeywordWithOperator(keywordInfo);
-        }
-
-        return searchKeyword;
-    }
-
-    static function SetupKeywordWithOperator(keywordInfo)
-    {
-        if(!keywordInfo instanceof KeywordInfo)
-        {
-            return '';
-        }
-        let keyword = keywordInfo.keyword;
-        if(keywordInfo.bMustCorrect)
-        {
-            keyword = '\"' + keyword + '\"';
-        }
-
-        keyword = keywordInfo.searchOperator + keyword;
-        keyword = keywordInfo.combineOperator + keyword;
-        
-        //keywordInfo.keyword = keyword;
-
-        return keyword;
+        console.log('err : ' + err);
     }
 }
 
-export default SearchLibrary;
+SearchLibrary.prototype.setupKeywordWithOperator = function setupKeywordWithOperator(keywordInfo)
+{
+    if(!keywordInfo instanceof KeywordInfo || keywordInfo.keyword.length == 0)
+    {
+        return '';
+    }
+    let keyword = keywordInfo.keyword;
+    if(keywordInfo.bMustCorrect)
+    {
+        keyword = '\"' + keyword + '\"';
+    }
+
+    keyword = keywordInfo.searchOperator.value + keyword;
+    keyword = keywordInfo.combineOperator.value + keyword;
+    
+    //keywordInfo.keyword = keyword;
+
+    return keyword;
+}
+
+SearchLibrary.prototype.makeSearchKeyword = function(keywordInfoList)
+{
+    let searchKeyword = '';
+    for(let keywordInfo of keywordInfoList)
+    {
+        searchKeyword += this.setupKeywordWithOperator(keywordInfo);
+    }
+
+    return searchKeyword;
+}
+
+export default new SearchLibrary();

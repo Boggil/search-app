@@ -3,11 +3,11 @@ import CombineOperator from './CombineOperator';
 
 function KeywordInfo()
 {
-    let keyword = '';
-    let searchOperator = SearchOperator.NONE;
-    let combineOperator = CombineOperator.AND;
-    let bMustCorrect = false;
-    let lastBuildDate = new Date();
+    this.keyword = '';
+    this.searchOperator = SearchOperator.NONE;
+    this.combineOperator = CombineOperator.AND;
+    this.bMustCorrect = false;
+    this.lastBuildDate = new Date();
 }
 
 export default KeywordInfo;

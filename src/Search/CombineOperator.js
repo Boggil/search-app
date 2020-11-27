@@ -1,6 +1,6 @@
 let CombineOperator = Object.freeze({
-    AND : '',
-    OR : '|'
+    AND : {displayName:'AND', value:''},
+    OR : {displayName:'OR', value:'|'}
 });
 
 export default CombineOperator;

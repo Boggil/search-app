@@ -4,7 +4,7 @@ import DetailSearchKeywordBox from './DetailSearchKeywordBox';
 import SearchCategory from '../Search/SearchCategory';
 import SearchLibrary from '../Search/SearchLibrary';
 
-function DetailSearchKeywordList({category})
+function DetailSearchKeywordList({category, setResult})
 {
     const [keywordInfoList, setKeywordInfoList] = useState([]);
     const [renderNum, setRenderNum] = useState(0);
@@ -30,7 +30,7 @@ function DetailSearchKeywordList({category})
             return;
         }
 
-        SearchLibrary.searchData(detailSearchKeyword, category);
+        setResult(SearchLibrary.searchData(detailSearchKeyword, category));
     }
 
     function onKeywordInfoChanged()

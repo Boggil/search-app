@@ -2,7 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import SearchCategory from './SearchCategory'
 import KeywordInfo from './KeywordInfo';
-import ResultContext from '../Component/SearchProvider';
+import SearchContext from '../Component/SearchContext';
 
 function SearchLibrary() { }
 
@@ -18,11 +18,14 @@ SearchLibrary.prototype.searchData = async function (keyword, category)
             'X-Naver-Client-Id':client_id,
             'X-Naver-Client-Secret': client_secret
             }
-        }).then((res)=>{console.log(res)});
+        }).then((res)=>{
+            return res;
+        });
     }
     catch(err)
     {
         console.log('err : ' + err);
+        return null;
     }
 }
 

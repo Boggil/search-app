@@ -1,21 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Axios from 'axios';
 import SearchBox from './Component/SearchBox';
-import SearchProvider from './Component/SearchProvider';
+import SearchContext from './Component/SearchContext';
 
 function App() {
+  const [result, setResult] = useState({});
+
   return (
     <div className="App">
-      <SearchBox>
-      </SearchBox>
-      <ResultContext.Consumer>
-        {
-          result => {
-            console.log(result);
+      <SearchContext.Provider value={result}>
+        <SearchBox setResult = {setResult}>
+        </SearchBox>
+        <SearchContext.Consumer>
+          {
+            ({result})=>{
+              console.log(result);
+            }
           }
-        }
-      </ResultContext.Consumer>
+        </SearchContext.Consumer>
+      </SearchContext.Provider>
     </div>
   );
 }

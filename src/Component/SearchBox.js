@@ -4,7 +4,7 @@ import DetailSearchKeywordList from './DetailSearchKeywordList';
 import SearchLibrary from '../Search/SearchLibrary';
 import ResultList from './ResultList';
 
-function SearchBox()
+function SearchBox(setResult)
 {
     const [keyword, setKeyword] = useState('');
     const [category, setCategory] = useState(SearchCategory.BLOG);
@@ -33,7 +33,9 @@ function SearchBox()
 
     function onClickSearch(event)
     {
-        SearchLibrary.searchData(keyword, category);
+        SearchLibrary.searchData(keyword, category).then((res)=>{
+            setResult(res);
+        });
     }
     
     {
@@ -52,7 +54,7 @@ function SearchBox()
             <select onChange={onCategorySelected}> { categories } </select>
             <input type="button" value="검색" onClick={onClickSearch}></input>
             <br/>
-            <DetailSearchKeywordList category={category}></DetailSearchKeywordList>
+            <DetailSearchKeywordList category={category} setResult={setResult}></DetailSearchKeywordList>
 
         </div>
     );

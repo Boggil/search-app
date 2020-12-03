@@ -5,20 +5,20 @@ import SearchBox from './Component/SearchBox';
 import SearchContext from './Component/SearchContext';
 
 function App() {
-  const [result, setResult] = useState({});
+  const [result, setResult] = useState([]);
 
   return (
     <div className="App">
       <SearchContext.Provider value={result}>
-        <SearchBox setResult = {setResult}>
+        <SearchBox setResult={setResult}>
         </SearchBox>
-        <SearchContext.Consumer>
+        {/* <SearchContext.Consumer>
           {
             ({result})=>{
               console.log(result);
             }
           }
-        </SearchContext.Consumer>
+        </SearchContext.Consumer> */}
       </SearchContext.Provider>
     </div>
   );

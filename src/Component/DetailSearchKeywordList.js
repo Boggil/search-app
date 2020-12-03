@@ -1,66 +1,61 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import KeywordInfo from '../Search/KeywordInfo';
 import DetailSearchKeywordBox from './DetailSearchKeywordBox';
 import SearchCategory from '../Search/SearchCategory';
 import SearchLibrary from '../Search/SearchLibrary';
 
-function DetailSearchKeywordList({category, setResult})
-{
+function DetailSearchKeywordList({ category, setResult }) {
     const [keywordInfoList, setKeywordInfoList] = useState([]);
     const [renderNum, setRenderNum] = useState(0);
     const [detailSearchKeyword, setDetailSearchKeyword] = useState('');
 
-    function onClickPlus(event)
-    {
+    function onClickPlus(event) {
         keywordInfoList.push(new KeywordInfo());
         rerender();
     }
 
-    function onClickMinus(event)
-    {
+    function onClickMinus(event) {
         keywordInfoList.pop();
         rerender();
     }
 
-    function onClickDetailSearchButton(event)
-    {
-        if(detailSearchKeyword.length === 0)
-        {
+    function onClickDetailSearchButton(event) {
+        if (detailSearchKeyword.length === 0) {
             alert('상세검색 키워드를 설정해주세요.');
             return;
         }
 
-        setResult(SearchLibrary.searchData(detailSearchKeyword, category));
+        SearchLibrary.searchData(detailSearchKeyword, category)
+            .then((res) => console.log(res));
+        // setResult();
     }
 
-    function onKeywordInfoChanged()
-    {
+    function onKeywordInfoChanged() {
         setDetailSearchKeyword(SearchLibrary.makeSearchKeyword(keywordInfoList));
     }
 
-    function rerender()
-    {
+    function rerender() {
         setRenderNum(renderNum + 1);
     }
 
-    
 
-    return(
-        <div>            
+
+    return (
+        <div>
             <label>
                 {detailSearchKeyword}
             </label>
-            <input type="button" value="상세검색" onClick={onClickDetailSearchButton}/>
-            <br/>
-            <input type="button" value="+" onClick={onClickPlus}/>
-            <input type="button" value="-" onClick={onClickMinus}/>
+            <input type="button" value="상세검색" onClick={onClickDetailSearchButton} />
+            <br />
+            <input type="button" value="+" onClick={onClickPlus} />
+            <input type="button" value="-" onClick={onClickMinus} />
 
-            <br/>
+            <br />
             {
-                keywordInfoList.map((keywordInfo, index)=>{
+                keywordInfoList.map((keywordInfo, index) => {
                     return <DetailSearchKeywordBox key={index}
-                     keywordInfo={keywordInfo}
-                     onKeywordInfoChanged={onKeywordInfoChanged}>
+                        keywordInfo={keywordInfo}
+                        onKeywordInfoChanged={onKeywordInfoChanged}>
                     </DetailSearchKeywordBox>;
                 })
             }
